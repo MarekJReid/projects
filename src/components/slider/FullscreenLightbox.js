@@ -1,5 +1,8 @@
 import React, { useRef, useState, useEffect } from "react"
 import { TweenLite, Power3 } from "gsap"
+
+import Slide from "./slide"
+
 import {
   CloseButton,
   FullScreenLightBoxContainer,
@@ -7,10 +10,7 @@ import {
   SliderControls,
   ModalBack,
   ModalForward,
-  FullScreen,
-  SliderContainer,
 } from "../slider/slider-components"
-import Slide from "./slide"
 
 const FullscreenLightbox = ({ openLightbox, setOpenLightbox, data }) => {
   const [imageArr, setimageArr] = useState([])
@@ -51,13 +51,16 @@ const FullscreenLightbox = ({ openLightbox, setOpenLightbox, data }) => {
   }, [modalSliderContainer.current])
   //fade in imagebox
   useEffect(() => {
-    TweenLite.fromTo(modalContainer, .75, {
-      opacity: 0,
-      }, 
+    TweenLite.fromTo(
+      modalContainer,
+      0.75,
       {
-        opacity: 1
+        opacity: 0,
+      },
+      {
+        opacity: 1,
       }
-      )
+    )
   }, [openLightbox])
 
   const slideLeft = () => {
@@ -99,53 +102,52 @@ const FullscreenLightbox = ({ openLightbox, setOpenLightbox, data }) => {
   }
 
   const close = () => {
-    TweenLite.fromTo(modalContainer, .5, {
-      opacity: 1,
-      }, 
+    TweenLite.fromTo(
+      modalContainer,
+      0.5,
       {
-        opacity: 0
+        opacity: 1,
+      },
+      {
+        opacity: 0,
       }
-      )
-      
-  
+    )
+
     setTimeout(() => {
-      
       setOpenLightbox(false)
-    }, 500);
+    }, 500)
   }
 
   return (
-  
-
-   
     <FullScreenLightBoxContainer
       openLightbox={openLightbox}
       ref={el => (modalContainer = el)}
     >
-      <div class="" style={{height: `100%`, width: `100%`}} ref={modalSliderContainer}>
-      <CloseButton onClick={close}>
-        x
-      </CloseButton>
+      <div
+        class=""
+        style={{ height: `100%`, width: `100%` }}
+        ref={modalSliderContainer}
+      >
+        <CloseButton onClick={close}>x</CloseButton>
 
-      <ModalSliderContainer>
-        <div
-          style={{ flexGrow: 1, display: `flex` }}
-          ref={el => (imageList = el)}
-        >
-          {imageArr.map(image => (
-            <Slide fluid={image.image.fluid} keys={image.imageId} />
-          ))}
-        </div>
-        hi
-      </ModalSliderContainer>
-      <SliderControls>
-        {backButton ? <ModalBack onClick={slideRight}>&#60;</ModalBack> : ""}
+        <ModalSliderContainer>
+          <div
+            style={{ flexGrow: 1, display: `flex` }}
+            ref={el => (imageList = el)}
+          >
+            {imageArr.map(image => (
+              <Slide fluid={image.image.fluid} keys={image.imageId} />
+            ))}
+          </div>
+          hi
+        </ModalSliderContainer>
+        <SliderControls>
+          {backButton ? <ModalBack onClick={slideRight}>&#60;</ModalBack> : ""}
 
-        <ModalForward onClick={slideLeft}>></ModalForward>
-      </SliderControls>
+          <ModalForward onClick={slideLeft}>></ModalForward>
+        </SliderControls>
       </div>
     </FullScreenLightBoxContainer>
- 
   )
 }
 
